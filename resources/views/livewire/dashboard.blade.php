@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\ProcessPodcastUrl;
 use App\Models\Episode;
 use App\Models\ListeningParty;
 use Livewire\Attributes\Validate;
@@ -29,6 +30,8 @@ new class extends Component {
             'start_time' => $this->startTime,
         ]);
 
+        ProcessPodcastUrl::dispatch($this->mediaUrl, $listeningParty, $episode);
+
         return redirect()->route('parties.show', $listeningParty);
     }
 
@@ -44,9 +47,9 @@ new class extends Component {
     <div class="w-full max-w-lg px-4">
         <form wire:submit="createListeningParty" class="space-y-6">
             <x-input wire:model="name" placeholder="Listening Party Name"/>
-            <x-input wire:model="mediaUrl" placeholder="Podcast Episode Url"
+            <x-input wire:model="mediaUrl" placeholder="Podcast RSS Feed Url"
                      description="Entering the RSS Feed URL will grab the latest episode"/>
-            <x-datetime-picker wire:model="startTime" placeholder="Listening Party Time"/>
+            <x-datetime-picker wire:model="startTime" placeholder="Listening Party Time" :min="now()"/>
             <x-button type="submit">Create Listening Party</x-button>
         </form>
     </div>
