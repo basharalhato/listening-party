@@ -40,6 +40,7 @@ new class extends Component {
         return [
             'listeningParties' => ListeningParty::query()
                 ->where('is_active', true)
+                ->whereNotNull('end_time')
                 ->orderBy('start_time')
                 ->with('episode.podcast')
                 ->get(),
@@ -68,8 +69,8 @@ new class extends Component {
             <h3 class="mb-4 font-serif text-[0.9rem] font-bold">Upcoming Listening Parties</h3>
             <div class="bg-white rounded-lg shadow-lg">
                 @if ($listeningParties->isEmpty())
-                    <div class="flex items-center justify-center p-6 font-serif text-sm">No awwdio listening parties
-                        started yet... 😔
+                    <div class="flex items-center justify-center p-6 font-serif text-sm">No listening parties
+                        started yet. 😔
                     </div>
                 @else
                     @foreach ($listeningParties as $listeningParty)
@@ -110,21 +111,14 @@ new class extends Component {
                                                     }
                                                 }
                                             }"
-                                                 x-init="updateCountdown();
-                                                setInterval(() => updateCountdown(), 1000);">
+                                                 x-init="updateCountdown(); setInterval(() => updateCountdown(), 1000);">
                                                 <div x-show="isLive">
                                                     <x-badge flat rose label="Live">
-                                                        <x-slot name="prepend"
-                                                                class="relative flex items-center w-2 h-2">
-                                                            <span
-                                                                class="absolute inline-flex w-full h-full rounded-full opacity-75 bg-rose-500 animate-ping"></span>
-
-                                                            <span
-                                                                class="relative inline-flex w-2 h-2 rounded-full bg-rose-500"></span>
+                                                        <x-slot name="prepend" class="relative flex items-center w-2 h-2">
+                                                            <span class="absolute inline-flex w-full h-full rounded-full opacity-75 bg-rose-500 animate-ping"></span>
+                                                            <span class="relative inline-flex w-2 h-2 rounded-full bg-rose-500"></span>
                                                         </x-slot>
-
                                                     </x-badge>
-
                                                 </div>
                                                 <div x-show="!isLive">
                                                     Starts in: <span x-text="countdownText"></span>
