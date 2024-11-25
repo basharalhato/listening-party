@@ -28,6 +28,8 @@ new class extends Component {
             'name' => $this->name,
             'start_time' => $this->startTime,
         ]);
+
+        return redirect()->route('parties.show', $listeningParty);
     }
 
     public function with()
