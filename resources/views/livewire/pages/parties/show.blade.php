@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Session;
 use Livewire\Volt\Component;
 use App\Models\ListeningParty;
 use Livewire\Attributes\Validate;
@@ -265,7 +266,7 @@ new class extends Component {
                 <div class="flex items-center space-x-4">
                     <div class="flex-shrink-0">
                         <x-avatar src="{{ $listeningParty->episode->podcast->artwork_url }}" size="xl"
-                                  rounded="sm" alt="Podcast Artwork" />
+                                  rounded="sm" alt="Podcast Artwork"/>
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-[0.9rem] font-semibold truncate text-slate-900">
@@ -301,14 +302,14 @@ new class extends Component {
                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
                         </svg>
                         <span x-show="copyNotification" class="tracking-tight text-emerald-500" x-cloak>Copied!</span>
                         <svg x-show="copyNotification" class="w-4 h-4 ml-1.5 text-green-500 stroke-current"
                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" x-cloak>
                             <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"/>
                         </svg>
                     </button>
                 </div>
@@ -326,7 +327,7 @@ new class extends Component {
                             <div class="flex items-center mb-6 space-x-4">
                                 <div class="flex-shrink-0">
                                     <x-avatar src="{{ $listeningParty->episode->podcast->artwork_url }}" size="xl"
-                                              rounded="sm" alt="Podcast Artwork" />
+                                              rounded="sm" alt="Podcast Artwork"/>
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-lg font-semibold truncate text-slate-900">
@@ -360,7 +361,7 @@ new class extends Component {
                             </div>
 
                             <div x-show="!isPlaying" class="mt-6">
-                                <x-button class="w-full" primary label="Join Listening Party" />
+                                <x-button class="w-full" primary label="Join Listening Party"/>
                             </div>
                         </div>
 
@@ -393,7 +394,7 @@ new class extends Component {
                                              wire:key="{{ $message->id }}">
                                             <div class="flex items-center">
                                                 <x-avatar xs
-                                                          label="{{ strtoupper(substr($message->user->name, 0, 1)) }}" />
+                                                          label="{{ strtoupper(substr($message->user->name, 0, 1)) }}"/>
                                                 <div class="flex items-center ml-2 space-x-2">
                                                     <span
                                                         class="text-xs font-bold text-slate-900">{{ $message->user->name }}:</span>
@@ -409,11 +410,11 @@ new class extends Component {
                                 @auth
                                     <form class="flex space-x-2" wire:submit='sendMessage'>
                                         <x-input type="text" placeholder="Type your message..." wire:model='message'
-                                                 class="w-full" />
-                                        <x-button primary label="Send" type="submit" />
+                                                 class="w-full"/>
+                                        <x-button primary label="Send" type="submit"/>
                                     </form>
                                 @else
-                                    <x-button wire:click="authenticateUser" label="Login to Chat" class="w-full" />
+                                    <x-button wire:click="authenticateUser" label="Login to Chat" class="w-full"/>
                                 @endauth
                             </div>
                         </div>
